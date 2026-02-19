@@ -1,0 +1,170 @@
+---
+import { useTranslations } from '../i18n/index';
+
+interface Props {
+  lang: string;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+
+const socials = [
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/lindsey-vazquez-209a8117a/', icon: 'linkedin' },
+  { name: 'Email', href: 'mailto:lindsey.vazquez@ssupport.com', icon: 'email' },
+];
+---
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href={`/${lang}/`} class="footer-logo">
+        <span class="logo-lv">LV</span>
+        <span>Lindsey Vazquez</span>
+      </a>
+      <p class="footer-tagline">{t.hero.tagline}</p>
+    </div>
+
+    <div class="footer-links">
+      <a href={`/${lang}/`}>{t.nav.home}</a>
+      <a href={`/${lang}/about`}>{t.nav.about}</a>
+      <a href={`/${lang}/services`}>{t.nav.services}</a>
+      <a href={`/${lang}/portfolio`}>{t.nav.portfolio}</a>
+      <a href={`/${lang}/blog`}>{t.nav.blog}</a>
+      <a href={`/${lang}/contact`}>{t.nav.contact}</a>
+    </div>
+
+    <div class="footer-socials">
+      {socials.map(s => (
+        <a href={s.href} target="_blank" rel="noopener noreferrer" class="social-link" aria-label={s.name}>
+          {s.name === 'LinkedIn' ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; {year} Lindsey Vazquez. {t.footer.rights}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    margin-top: var(--space-2xl);
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: var(--space-xl);
+    align-items: start;
+    padding-block: var(--space-xl);
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-primary);
+  }
+
+  .logo-lv {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .footer-tagline {
+    font-size: 0.85rem;
+    max-width: 30ch;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .footer-links a {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
+  }
+
+  .footer-socials {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--surface-hover);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    transition: all var(--transition);
+  }
+
+  .social-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-block: var(--space-sm);
+  }
+
+  .footer-bottom p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    max-width: unset;
+  }
+
+  @media (max-width: 768px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .footer-socials {
+      flex-direction: row;
+    }
+  }
+</style>

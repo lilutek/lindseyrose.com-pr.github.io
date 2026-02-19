@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useTranslations } from '../../i18n/index';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'es' } }];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang);
+
+const items = (await getCollection('portfolio'))
+  .filter(p => p.data.lang === lang)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Base title={t.nav.portfolio} description={t.portfolio.subtitle} lang={lang}>
+
+  <section class="page-hero">
+    <div class="page-hero-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="reveal">
+        <span class="section-eyebrow">{t.nav.portfolio}</span>
+        <h1>{t.portfolio.title}</h1>
+        <p class="lead">{t.portfolio.subtitle}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {items.length === 0 ? (
+        <div class="empty-state reveal">
+          <p>{lang === 'en' ? 'Portfolio content coming soon.' : 'Contenido del portafolio próximamente.'}</p>
+        </div>
+      ) : (
+        <div class="portfolio-grid">
+          {items.map((item) => (
+            <a href={`/${lang}/portfolio/${item.slug}`} class="card portfolio-card reveal">
+              <img src={item.data.image} alt={item.data.title} loading="lazy" width="600" height="340" />
+              <div class="card-body">
+                <div class="card-meta">
+                  {item.data.tags.map(tag => <span class="card-tag">{tag}</span>)}
+                </div>
+                <h3>{item.data.title}</h3>
+                {item.data.client && <p class="client-label">{lang === 'en' ? 'Client' : 'Cliente'}: {item.data.client}</p>}
+                <p>{item.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero { position: relative; padding-block: var(--space-2xl) var(--space-xl); overflow: hidden; }
+  .page-hero-glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(187, 134, 252, 0.08), transparent 70%); pointer-events: none; }
+  .section-eyebrow { font-family: var(--font-heading); font-size: 0.78rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; display: block; margin-bottom: var(--space-xs); }
+  .lead { font-size: 1.15rem; }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-md); }
+  .portfolio-card { text-decoration: none; color: inherit; display: block; }
+  .portfolio-card img { width: 100%; height: 220px; object-fit: cover; }
+  .card-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
+  .client-label { font-size: 0.8rem; color: var(--accent-alt); font-family: var(--font-heading); font-weight: 500; }
+  .empty-state { text-align: center; padding: var(--space-2xl); }
+</style>

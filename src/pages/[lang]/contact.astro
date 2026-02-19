@@ -1,0 +1,178 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useTranslations } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'es' } }];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang);
+---
+
+<Base title={t.nav.contact} description={t.contact.subtitle} lang={lang}>
+
+  <section class="page-hero">
+    <div class="page-hero-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="reveal">
+        <span class="section-eyebrow">{t.nav.contact}</span>
+        <h1>{t.contact.title}</h1>
+        <p class="lead">{t.contact.subtitle}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-grid">
+
+      <!-- Contact form -->
+      <div class="contact-form-wrapper reveal">
+        <form
+          action="https://formspree.io/f/xpwzepra"
+          method="POST"
+          class="contact-form"
+          id="contact-form"
+        >
+          <div class="form-group">
+            <label for="name">{t.contact.namePlaceholder}</label>
+            <input type="text" id="name" name="name" placeholder={t.contact.namePlaceholder} required autocomplete="name" />
+          </div>
+          <div class="form-group">
+            <label for="email">{t.contact.emailPlaceholder}</label>
+            <input type="email" id="email" name="email" placeholder={t.contact.emailPlaceholder} required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="message">{t.contact.messagePlaceholder}</label>
+            <textarea id="message" name="message" rows="6" placeholder={t.contact.messagePlaceholder} required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">{t.contact.send}</button>
+          <p class="form-success" id="form-success" aria-live="polite">
+            {lang === 'en' ? '✓ Message sent! I\'ll be in touch soon.' : '✓ ¡Mensaje enviado! Me pondré en contacto pronto.'}
+          </p>
+        </form>
+      </div>
+
+      <!-- Contact info -->
+      <div class="contact-info reveal">
+        <div class="contact-info-card">
+          <h3>{lang === 'en' ? 'Get In Touch' : 'Contacto Directo'}</h3>
+          <div class="contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:lindsey.vazquez@ssupport.com">lindsey.vazquez@ssupport.com</a>
+          </div>
+          <div class="contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <a href="tel:+17866816144">(786) 681-6144</a>
+          </div>
+          <div class="contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            <a href="https://www.linkedin.com/in/lindsey-vazquez-209a8117a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </div>
+          <div class="contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Miami, FL</span>
+          </div>
+        </div>
+
+        <div class="availability-card">
+          <div class="avail-dot" aria-hidden="true"></div>
+          <div>
+            <strong>{lang === 'en' ? 'Available for opportunities' : 'Disponible para oportunidades'}</strong>
+            <p>{lang === 'en' ? 'Open to PR roles, freelance projects, and collaborations.' : 'Abierta a roles de PR, proyectos freelance y colaboraciones.'}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const success = document.getElementById('form-success') as HTMLElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+    if (res.ok) {
+      form.reset();
+      success.style.display = 'block';
+    }
+  });
+</script>
+
+<style>
+  .page-hero { position: relative; padding-block: var(--space-2xl) var(--space-xl); overflow: hidden; }
+  .page-hero-glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(187, 134, 252, 0.08), transparent 70%); pointer-events: none; }
+  .section-eyebrow { font-family: var(--font-heading); font-size: 0.78rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; display: block; margin-bottom: var(--space-xs); }
+  .lead { font-size: 1.15rem; }
+
+  .contact-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-xl); align-items: start; }
+
+  .contact-form { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .contact-form-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+  }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  label { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
+  input, textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.75rem var(--space-sm);
+    transition: border-color var(--transition);
+    resize: vertical;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  input::placeholder, textarea::placeholder { color: var(--text-secondary); }
+  .form-success { display: none; color: var(--accent-alt); font-size: 0.9rem; margin-top: 0.5rem; }
+
+  .contact-info { display: flex; flex-direction: column; gap: var(--space-md); }
+  .contact-info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  .contact-info-card h3 { font-size: 1.2rem; margin-bottom: 0.25rem; }
+  .contact-item { display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary); font-size: 0.9rem; }
+  .contact-item svg { color: var(--accent); flex-shrink: 0; }
+  .contact-item a { color: var(--text-secondary); text-decoration: none; transition: color var(--transition); }
+  .contact-item a:hover { color: var(--accent); }
+
+  .availability-card {
+    background: var(--accent-dim);
+    border: 1px solid rgba(187, 134, 252, 0.2);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+  .avail-dot {
+    width: 10px;
+    height: 10px;
+    background: #4CAF50;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+    box-shadow: 0 0 8px #4CAF50;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .availability-card strong { font-family: var(--font-heading); color: var(--text-primary); display: block; margin-bottom: 0.25rem; }
+  .availability-card p { font-size: 0.85rem; max-width: unset; }
+
+  @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } }
+</style>

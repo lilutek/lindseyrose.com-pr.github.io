@@ -1,0 +1,159 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useTranslations } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'es' } }];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang);
+
+const services = [
+  {
+    icon: '📡',
+    key: 'mediaRelations' as const,
+    features: lang === 'en'
+      ? ['Media list development', 'Press release writing', 'Interview coordination', 'Journalist relationships']
+      : ['Desarrollo de listas de medios', 'Redacción de comunicados de prensa', 'Coordinación de entrevistas', 'Relaciones con periodistas'],
+  },
+  {
+    icon: '✍️',
+    key: 'contentStrategy' as const,
+    features: lang === 'en'
+      ? ['Brand storytelling', 'Editorial calendars', 'Blog & newsletter writing', 'Audience analysis']
+      : ['Narrativa de marca', 'Calendarios editoriales', 'Blog y boletines', 'Análisis de audiencia'],
+  },
+  {
+    icon: '🎤',
+    key: 'eventPR' as const,
+    features: lang === 'en'
+      ? ['Press lists & credentials', 'Pre/post event coverage', 'Media scrums', 'Coverage reports']
+      : ['Listas de prensa y credenciales', 'Cobertura pre/post evento', 'Ruedas de prensa', 'Informes de cobertura'],
+  },
+  {
+    icon: '📱',
+    key: 'socialMedia' as const,
+    features: lang === 'en'
+      ? ['Platform strategy', 'Content creation', 'Community management', 'Analytics & reporting']
+      : ['Estrategia de plataforma', 'Creación de contenido', 'Gestión de comunidad', 'Análisis e informes'],
+  },
+];
+---
+
+<Base title={t.nav.services} description={t.services.subtitle} lang={lang}>
+
+  <section class="page-hero">
+    <div class="page-hero-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="reveal">
+        <span class="section-eyebrow">{t.nav.services}</span>
+        <h1>{t.services.title}</h1>
+        <p class="lead">{t.services.subtitle}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="services-grid">
+        {services.map((svc, i) => {
+          const info = t.services[svc.key];
+          return (
+            <div class="svc-card reveal" style={`animation-delay: ${i * 0.1}s`}>
+              <div class="svc-icon">{svc.icon}</div>
+              <h2>{info.title}</h2>
+              <p>{info.desc}</p>
+              <ul class="svc-features">
+                {svc.features.map(f => <li>✓ {f}</li>)}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-box reveal">
+        <h2>{t.contact.title}</h2>
+        <p>{t.contact.subtitle}</p>
+        <a href={`/${lang}/contact`} class="btn btn-primary">{t.hero.ctaSecondary}</a>
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .page-hero {
+    position: relative;
+    padding-block: var(--space-2xl) var(--space-xl);
+    overflow: hidden;
+  }
+  .page-hero-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(187, 134, 252, 0.08), transparent 70%);
+    pointer-events: none;
+  }
+  .section-eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    display: block;
+    margin-bottom: var(--space-xs);
+  }
+  .lead { font-size: 1.15rem; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+  }
+  .svc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+  }
+  .svc-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-glow);
+  }
+  .svc-icon { font-size: 2.5rem; }
+  .svc-card h2 { font-size: 1.4rem; }
+  .svc-features {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: auto;
+  }
+  .svc-features li {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+  }
+  .cta-box {
+    text-align: center;
+    max-width: 640px;
+    margin-inline: auto;
+    padding: var(--space-xl);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glow);
+  }
+  .cta-box h2 { margin-bottom: var(--space-xs); }
+  .cta-box p { margin-inline: auto; margin-bottom: var(--space-lg); }
+</style>

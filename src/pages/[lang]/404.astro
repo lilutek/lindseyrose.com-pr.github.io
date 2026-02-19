@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useTranslations } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'es' } }];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang);
+---
+
+<Base title="404" description={lang === 'en' ? 'Page not found' : 'Página no encontrada'} lang={lang}>
+  <section class="not-found-section">
+    <div class="bg-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="not-found-inner reveal">
+        <p class="big-404" aria-hidden="true">404</p>
+        <h1>{lang === 'en' ? 'Page Not Found' : 'Página No Encontrada'}</h1>
+        <p>{lang === 'en' ? "Looks like this page took an unplanned backstage exit." : "Parece que esta página tomó una salida no planificada entre bastidores."}</p>
+        <a href={`/${lang}/`} class="btn btn-primary">{lang === 'en' ? '← Back to Home' : '← Volver al Inicio'}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .bg-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(187, 134, 252, 0.1), transparent 70%);
+    pointer-events: none;
+  }
+  .not-found-inner {
+    text-align: center;
+    max-width: 540px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+  }
+  .big-404 {
+    font-family: var(--font-heading);
+    font-size: clamp(6rem, 20vw, 12rem);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.6;
+  }
+</style>

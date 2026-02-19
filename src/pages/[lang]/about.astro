@@ -1,0 +1,339 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useTranslations } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'es' } }];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang);
+
+const experience = [
+  {
+    title: lang === 'en' ? 'Public Relations Intern' : 'Pasante de Relaciones Públicas',
+    company: 'Tara INK.',
+    period: 'Oct 2025 – Jan 2026',
+    location: 'Miami, FL',
+    items: lang === 'en'
+      ? ['Tracked and monitored press coverage across relevant media outlets', 'Assisted in drafting media/event pitches tailored to target journalists and publications', 'Managed media clippings, coverage reports, and RSVP lists for press events', 'Assisted with Art Basel, Intercontinental Make-A-Wish Gala, and more']
+      : ['Monitoreé la cobertura de prensa en medios relevantes', 'Asistí en la redacción de pitches para medios adaptados a periodistas objetivo', 'Gestioné recortes de medios, reportes de cobertura y listas RSVP para eventos de prensa', 'Asistí con Art Basel, la Gala Make-A-Wish Intercontinental, y más'],
+  },
+  {
+    title: lang === 'en' ? 'Marketing & Communications Intern' : 'Pasante de Marketing y Comunicaciones',
+    company: 'Ocala Main Street',
+    period: 'Oct 2024 – Apr 2025',
+    location: 'Ocala, FL',
+    items: lang === 'en'
+      ? ['Promoted and revitalized downtown Ocala through marketing campaigns and event coordination', 'Developed content for social media to enhance community engagement and brand awareness', 'Planned and executed events supporting local businesses and attracting visitors', 'Wrote press releases for new city initiatives']
+      : ['Promoví y revitalicé el centro de Ocala a través de campañas de marketing y coordinación de eventos', 'Desarrollé contenido para redes sociales para mejorar el compromiso comunitario', 'Planifiqué y ejecuté eventos que apoyan negocios locales', 'Redacté comunicados de prensa para nuevas iniciativas de la ciudad'],
+  },
+];
+
+const skills = [
+  { label: lang === 'en' ? 'Strategic Communication' : 'Comunicación Estratégica', detail: lang === 'en' ? 'Content creation, media pitching, audience analysis' : 'Creación de contenido, pitching a medios, análisis de audiencia' },
+  { label: lang === 'en' ? 'Leadership & Team Management' : 'Liderazgo y Gestión de Equipos', detail: lang === 'en' ? 'Guiding teams, delegating tasks, motivating collaborators' : 'Guiar equipos, delegar tareas, motivar colaboradores' },
+  { label: lang === 'en' ? 'Problem-Solving' : 'Resolución de Problemas', detail: lang === 'en' ? 'Identifying issues, brainstorming solutions, implementing fixes' : 'Identificar problemas, idear soluciones, implementar mejoras' },
+  { label: lang === 'en' ? 'Technical Skills' : 'Habilidades Técnicas', detail: 'MOS Certified · Adobe CC (Photoshop, InDesign, Premiere) · Hootsuite · Canva' },
+  { label: lang === 'en' ? 'Languages' : 'Idiomas', detail: lang === 'en' ? 'English (Native) · Spanish (Fluent)' : 'Inglés (Nativo) · Español (Fluido)' },
+];
+---
+
+<Base title={t.nav.about} description={t.about.subtitle} lang={lang}>
+
+  <!-- PAGE HEADER -->
+  <section class="page-hero">
+    <div class="page-hero-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="page-hero-inner reveal">
+        <span class="section-eyebrow">{lang === 'en' ? 'About Me' : 'Sobre Mí'}</span>
+        <h1>{t.about.title}</h1>
+        <p class="lead">{t.about.subtitle}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIO -->
+  <section class="section">
+    <div class="container about-grid">
+      <div class="about-img reveal">
+        <img src="/images/about-portrait.webp" alt="Lindsey Vazquez" width="480" height="560" loading="lazy" />
+      </div>
+      <div class="about-bio reveal">
+        <h2>{lang === 'en' ? 'The Story' : 'La Historia'}</h2>
+        {lang === 'en' ? (
+          <>
+            <p>I'm a results-oriented public relations graduate from the University of Florida with a proven track record in strategic communication and community engagement. My work spans press events, social media campaigns, media pitching, and event PR — from Art Basel to downtown revitalization efforts.</p>
+            <p>Fluent in both English and Spanish, I bridge communities and amplify narratives with cultural intelligence. I'm passionate about the intersection of PR and live music — a world where storytelling, energy, and media collide.</p>
+          </>
+        ) : (
+          <>
+            <p>Soy una graduada orientada a resultados en relaciones públicas de la Universidad de Florida con un historial comprobado en comunicación estratégica y compromiso comunitario. Mi trabajo abarca eventos de prensa, campañas de redes sociales, pitching a medios y PR de eventos — desde Art Basel hasta esfuerzos de revitalización del centro de la ciudad.</p>
+            <p>Fluída en inglés y español, construyo puentes entre comunidades y amplico narrativas con inteligencia cultural. Me apasiona la intersección del PR y la música en vivo.</p>
+          </>
+        )}
+        <div class="education-badges">
+          <div class="edu-badge">
+            <span class="edu-icon">🎓</span>
+            <div>
+              <strong>University of Florida</strong>
+              <span>{lang === 'en' ? 'B.S. Public Relations · 2023–2025' : 'Licenciatura en RRPP · 2023–2025'}</span>
+            </div>
+          </div>
+          <div class="edu-badge">
+            <span class="edu-icon">🏫</span>
+            <div>
+              <strong>Miami Dade College</strong>
+              <span>{lang === 'en' ? 'A.A. · 2020–2023' : 'A.A. · 2020–2023'}</span>
+            </div>
+          </div>
+        </div>
+        <a href={`/${lang}/contact`} class="btn btn-primary">{t.hero.ctaSecondary}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section skills-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>{lang === 'en' ? 'Skills & Expertise' : 'Habilidades y Experiencia'}</h2>
+      </div>
+      <div class="skills-grid">
+        {skills.map(skill => (
+          <div class="skill-card reveal">
+            <h4>{skill.label}</h4>
+            <p>{skill.detail}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE TIMELINE -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>{lang === 'en' ? 'Experience' : 'Experiencia'}</h2>
+      </div>
+      <div class="timeline">
+        {experience.map((job, i) => (
+          <div class="timeline-item reveal">
+            <div class="timeline-dot" aria-hidden="true"></div>
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <div>
+                  <h3>{job.title}</h3>
+                  <span class="timeline-company">{job.company} · {job.location}</span>
+                </div>
+                <span class="timeline-period">{job.period}</span>
+              </div>
+              <ul>
+                {job.items.map(item => <li>{item}</li>)}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .page-hero {
+    position: relative;
+    padding-block: var(--space-2xl) var(--space-xl);
+    overflow: hidden;
+  }
+
+  .page-hero-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(187, 134, 252, 0.1), transparent 70%);
+    pointer-events: none;
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    display: block;
+    margin-bottom: var(--space-xs);
+  }
+
+  .lead {
+    font-size: 1.15rem;
+    max-width: 60ch;
+  }
+
+  /* About grid */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .about-img img {
+    width: 100%;
+    height: 560px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+  }
+
+  .about-bio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .about-bio h2 { margin-bottom: 0; }
+
+  .education-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .edu-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  .edu-icon { font-size: 1.5rem; }
+
+  .edu-badge strong {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+  }
+
+  .edu-badge span {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  /* Skills */
+  .skills-section { background: var(--surface); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-sm);
+  }
+
+  .skill-card {
+    padding: var(--space-md);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition);
+  }
+
+  .skill-card:hover { border-color: var(--accent); }
+  .skill-card h4 { color: var(--accent); margin-bottom: 0.4rem; }
+  .skill-card p { font-size: 0.9rem; max-width: unset; }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: var(--space-md) var(--space-md) var(--space-lg);
+    border-left: none;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2.45rem;
+    top: var(--space-md);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+  }
+
+  .timeline-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+  }
+
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    flex-wrap: wrap;
+  }
+
+  .timeline-header h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+
+  .timeline-company {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-family: var(--font-heading);
+    font-weight: 500;
+  }
+
+  .timeline-period {
+    font-size: 0.78rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--surface-hover);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .timeline-content ul {
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .timeline-content li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .about-img img { height: 320px; }
+    .timeline-header { flex-direction: column; }
+  }
+</style>

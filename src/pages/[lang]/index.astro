@@ -1,0 +1,367 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useTranslations } from '../../i18n/index';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'es' } }];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang);
+
+// Featured portfolio items
+const allPortfolio = await getCollection('portfolio');
+const featured = allPortfolio
+  .filter(p => p.data.lang === lang && p.data.featured)
+  .slice(0, 3);
+
+// Recent blog posts
+const allBlog = await getCollection('blog');
+const recentPosts = allBlog
+  .filter(p => p.data.lang === lang && !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const services = [
+  { key: 'mediaRelations', icon: '📡' },
+  { key: 'contentStrategy', icon: '✍️' },
+  { key: 'eventPR', icon: '🎤' },
+  { key: 'socialMedia', icon: '📱' },
+] as const;
+---
+
+<Base title="Home" description={t.hero.tagline} lang={lang}>
+
+  <!-- ====== HERO ====== -->
+  <section class="hero">
+    <div class="hero-bg-glow" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge reveal">Public Relations &amp; Communications</div>
+        <h1 class="reveal">Crafting Stories<br/><span class="accent-text">That Resonate.</span></h1>
+        <p class="hero-sub reveal">{t.hero.tagline}</p>
+        <div class="hero-ctas reveal">
+          <a href={`/${lang}/portfolio`} class="btn btn-primary">{t.hero.cta}</a>
+          <a href={`/${lang}/contact`} class="btn btn-outline">{t.hero.ctaSecondary}</a>
+        </div>
+        <div class="hero-stats reveal">
+          <div class="stat">
+            <span class="stat-num">3+</span>
+            <span class="stat-label">{lang === 'en' ? 'Years Experience' : 'Años de Experiencia'}</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat-num">10+</span>
+            <span class="stat-label">{lang === 'en' ? 'Media Placements' : 'Apariciones en Medios'}</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat-num">2</span>
+            <span class="stat-label">{lang === 'en' ? 'Languages' : 'Idiomas'}</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="hero-img-wrapper">
+          <img src="/images/hero-portrait.webp" alt="Lindsey Vazquez, PR Professional" class="hero-portrait" loading="eager" width="420" height="520" />
+          <div class="hero-img-glow" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== WAVEFORM DIVIDER ====== -->
+  <div class="waveform-divider" aria-hidden="true">
+    {'_'.repeat(12).split('').map(() => <span></span>)}
+  </div>
+
+  <!-- ====== SERVICES ====== -->
+  <section class="section services-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>{t.services.title}</h2>
+        <p>{t.services.subtitle}</p>
+      </div>
+      <div class="grid-2">
+        {services.map((s, i) => {
+          const svc = t.services[s.key];
+          return (
+            <div class="card service-card reveal" style={`animation-delay: ${i * 0.1}s`}>
+              <div class="card-body">
+                <div class="service-icon">{s.icon}</div>
+                <h3>{svc.title}</h3>
+                <p>{svc.desc}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== PORTFOLIO PREVIEW ====== -->
+  {featured.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>{t.portfolio.title}</h2>
+          <p>{t.portfolio.subtitle}</p>
+        </div>
+        <div class="grid-3">
+          {featured.map((item) => (
+            <a href={`/${lang}/portfolio/${item.slug}`} class="card portfolio-card reveal">
+              <img src={item.data.image} alt={item.data.title} loading="lazy" width="400" height="250" />
+              <div class="card-body">
+                <span class="card-tag">{item.data.tags[0]}</span>
+                <h3>{item.data.title}</h3>
+                <p>{item.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div class="section-cta reveal">
+          <a href={`/${lang}/portfolio`} class="btn btn-outline">{t.portfolio.viewAll}</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ====== BLOG PREVIEW ====== -->
+  {recentPosts.length > 0 && (
+    <section class="section blog-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>{t.blog.title}</h2>
+          <p>{t.blog.subtitle}</p>
+        </div>
+        <div class="grid-3">
+          {recentPosts.map((post) => (
+            <a href={`/${lang}/blog/${post.slug}`} class="card blog-card reveal">
+              {post.data.image && <img src={post.data.image} alt={post.data.title} loading="lazy" width="400" height="220" />}
+              <div class="card-body">
+                {post.data.tags[0] && <span class="card-tag">{post.data.tags[0]}</span>}
+                <h3>{post.data.title}</h3>
+                <p>{post.data.description}</p>
+                <span class="read-more">{t.blog.readMore} →</span>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div class="section-cta reveal">
+          <a href={`/${lang}/blog`} class="btn btn-outline">{t.blog.viewAll}</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ====== CONTACT CTA ====== -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-box reveal">
+        <h2>{t.contact.title}</h2>
+        <p>{t.contact.subtitle}</p>
+        <a href={`/${lang}/contact`} class="btn btn-primary">{t.hero.ctaSecondary}</a>
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    padding-block: var(--space-2xl);
+    overflow: hidden;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-bg-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(187, 134, 252, 0.12), transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.4rem 1rem;
+    background: var(--accent-dim);
+    border: 1px solid rgba(187, 134, 252, 0.25);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero-badge::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1 { margin-bottom: var(--space-sm); }
+
+  .accent-text {
+    background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero-stats {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .stat { text-align: center; }
+
+  .stat-num {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 40px;
+    background: var(--border);
+  }
+
+  /* Hero image */
+  .hero-visual { display: flex; justify-content: center; }
+
+  .hero-img-wrapper {
+    position: relative;
+    max-width: 420px;
+    width: 100%;
+  }
+
+  .hero-portrait {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    object-fit: cover;
+    height: 520px;
+    border: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-img-glow {
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(ellipse at center, rgba(187, 134, 252, 0.25), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== SERVICES ===== */
+  .service-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .service-card h3 { margin-bottom: 0.5rem; }
+
+  /* ===== SECTION CTA ===== */
+  .section-cta {
+    text-align: center;
+    margin-top: var(--space-xl);
+  }
+
+  /* ===== BLOG ===== */
+  .blog-section { background: var(--surface); }
+
+  .blog-card { text-decoration: none; color: inherit; display: block; }
+  .portfolio-card { text-decoration: none; color: inherit; display: block; }
+
+  .blog-card img, .portfolio-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .read-more {
+    display: inline-block;
+    margin-top: var(--space-xs);
+    font-size: 0.85rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  /* ===== CTA SECTION ===== */
+  .cta-box {
+    text-align: center;
+    max-width: 640px;
+    margin-inline: auto;
+    padding: var(--space-xl);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .cta-box h2 { margin-bottom: var(--space-xs); }
+  .cta-box p { margin-inline: auto; margin-bottom: var(--space-lg); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .hero-ctas { justify-content: center; }
+    .hero-stats { justify-content: center; }
+    .hero-visual { order: -1; }
+    .hero-portrait { height: 320px; }
+  }
+</style>

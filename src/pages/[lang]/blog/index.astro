@@ -1,0 +1,96 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { useTranslations } from '../../../i18n/index';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'es' } }];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang);
+
+const posts = (await getCollection('blog'))
+  .filter(p => p.data.lang === lang && !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Base title={t.nav.blog} description={t.blog.subtitle} lang={lang}>
+
+  <section class="page-hero">
+    <div class="page-hero-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="reveal">
+        <span class="section-eyebrow">{t.nav.blog}</span>
+        <h1>{t.blog.title}</h1>
+        <p class="lead">{t.blog.subtitle}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {posts.length === 0 ? (
+        <div class="empty-state reveal">
+          <p>{lang === 'en' ? 'Blog posts coming soon.' : 'Artículos del blog próximamente.'}</p>
+        </div>
+      ) : (
+        <div class="blog-list">
+          {posts.map((post) => (
+            <a href={`/${lang}/blog/${post.slug}`} class="blog-row reveal">
+              {post.data.image && (
+                <div class="blog-row-img">
+                  <img src={post.data.image} alt={post.data.title} loading="lazy" width="280" height="170" />
+                </div>
+              )}
+              <div class="blog-row-content">
+                <div class="blog-row-meta">
+                  {post.data.tags[0] && <span class="card-tag">{post.data.tags[0]}</span>}
+                  <time datetime={post.data.date.toISOString()}>
+                    {post.data.date.toLocaleDateString(lang === 'en' ? 'en-US' : 'es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </time>
+                </div>
+                <h2>{post.data.title}</h2>
+                <p>{post.data.description}</p>
+                <span class="read-more">{t.blog.readMore} →</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero { position: relative; padding-block: var(--space-2xl) var(--space-xl); overflow: hidden; }
+  .page-hero-glow { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(187, 134, 252, 0.08), transparent 70%); pointer-events: none; }
+  .section-eyebrow { font-family: var(--font-heading); font-size: 0.78rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; display: block; margin-bottom: var(--space-xs); }
+  .lead { font-size: 1.15rem; }
+  .blog-list { display: flex; flex-direction: column; gap: var(--space-md); }
+  .blog-row {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--space-md);
+    align-items: start;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+  }
+  .blog-row:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: var(--shadow-card); }
+  .blog-row-img img { width: 280px; height: 170px; object-fit: cover; }
+  .blog-row-content { padding: var(--space-md); display: flex; flex-direction: column; gap: 0.5rem; }
+  .blog-row-meta { display: flex; align-items: center; gap: 0.75rem; }
+  .blog-row-meta time { font-size: 0.8rem; color: var(--text-secondary); }
+  .blog-row h2 { font-size: 1.3rem; }
+  .read-more { font-size: 0.85rem; font-family: var(--font-heading); font-weight: 600; color: var(--accent); }
+  .empty-state { text-align: center; padding: var(--space-2xl); }
+  @media (max-width: 640px) {
+    .blog-row { grid-template-columns: 1fr; }
+    .blog-row-img img { width: 100%; height: 200px; }
+  }
+</style>
