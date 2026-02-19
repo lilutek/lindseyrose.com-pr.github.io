@@ -21,3 +21,6 @@ pnpm-debug.log*
 
 # Astro cache
 .astro/
+
+# sensitive/private documentation
+docs/
