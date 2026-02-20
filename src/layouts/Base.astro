@@ -10,6 +10,16 @@ interface Props {
 }
 
 const { title, description, lang } = Astro.props;
+const siteUrl = Astro.site ?? new URL(Astro.url.origin);
+const currentPath = Astro.url.pathname;
+const pathWithoutLocale = currentPath.replace(/^\/(en|es)(?=\/|$)/, '') || '/';
+const normalizedPath = pathWithoutLocale.startsWith('/') ? pathWithoutLocale : `/${pathWithoutLocale}`;
+const pathForLang = (targetLang: 'en' | 'es') =>
+  normalizedPath === '/' ? `/${targetLang}/` : `/${targetLang}${normalizedPath}`;
+const canonicalHref = new URL(currentPath, siteUrl).toString();
+const altEnHref = new URL(pathForLang('en'), siteUrl).toString();
+const altEsHref = new URL(pathForLang('es'), siteUrl).toString();
+const ogImageHref = new URL('/images/hero-portrait.webp', siteUrl).toString();
 ---
 <!DOCTYPE html>
 <html lang={lang} data-theme="dark">
@@ -17,12 +27,23 @@ const { title, description, lang } = Astro.props;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalHref} />
+  <link rel="alternate" hrefLang="en" href={altEnHref} />
+  <link rel="alternate" hrefLang="es" href={altEsHref} />
+  <link rel="alternate" hrefLang="x-default" href={altEnHref} />
   <title>{title} | Lindsey Vazquez PR</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta property="og:title" content={`${title} | Lindsey Vazquez PR`} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalHref} />
+  <meta property="og:image" content={ogImageHref} />
+  <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+  <meta property="og:locale:alternate" content={lang === 'es' ? 'en_US' : 'es_ES'} />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={`${title} | Lindsey Vazquez PR`} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageHref} />
 </head>
 <body>
   <div class="grain-overlay" aria-hidden="true"></div>

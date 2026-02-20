@@ -4,7 +4,7 @@ import { useTranslations } from '../../../i18n/index';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
   return posts.map(p => ({
     params: { lang: p.data.lang, slug: p.slug.replace(/^(en|es)\//, '') },
     props: { post: p },
@@ -15,6 +15,13 @@ const { lang } = Astro.params;
 const { post } = Astro.props;
 const t = useTranslations(lang);
 const { Content } = await post.render();
+const dateLocale = lang === 'en' ? 'en-US' : 'es-ES';
+const formattedDate = post.data.date.toLocaleDateString(dateLocale, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
 ---
 
 <Base title={post.data.title} description={post.data.description} lang={lang}>
@@ -25,9 +32,7 @@ const { Content } = await post.render();
         <div class="post-meta reveal">
           <a href={`/${lang}/blog`} class="back-link">← {t.nav.blog}</a>
           {post.data.tags.map(tag => <span class="card-tag">{tag}</span>)}
-          <time datetime={post.data.date.toISOString()}>
-            {post.data.date.toLocaleDateString(lang === 'en' ? 'en-US' : 'es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
+          <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
         </div>
         <h1 class="reveal">{post.data.title}</h1>
         <p class="lead reveal">{post.data.description}</p>

@@ -23,6 +23,8 @@ const recentPosts = allBlog
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
+const stripCollectionLocale = (slug: string) => slug.replace(/^(en|es)\//, '');
+
 const services = [
   { key: 'mediaRelations', icon: '📡' },
   { key: 'contentStrategy', icon: '✍️' },
@@ -110,7 +112,7 @@ const services = [
         </div>
         <div class="grid-3">
           {featured.map((item) => (
-            <a href={`/${lang}/portfolio/${item.slug}`} class="card portfolio-card reveal">
+            <a href={`/${lang}/portfolio/${stripCollectionLocale(item.slug)}`} class="card portfolio-card reveal">
               <img src={item.data.image} alt={item.data.title} loading="lazy" width="400" height="250" />
               <div class="card-body">
                 <span class="card-tag">{item.data.tags[0]}</span>
@@ -137,7 +139,7 @@ const services = [
         </div>
         <div class="grid-3">
           {recentPosts.map((post) => (
-            <a href={`/${lang}/blog/${post.slug}`} class="card blog-card reveal">
+            <a href={`/${lang}/blog/${stripCollectionLocale(post.slug)}`} class="card blog-card reveal">
               {post.data.image && <img src={post.data.image} alt={post.data.title} loading="lazy" width="400" height="220" />}
               <div class="card-body">
                 {post.data.tags[0] && <span class="card-tag">{post.data.tags[0]}</span>}

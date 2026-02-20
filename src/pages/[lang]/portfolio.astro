@@ -13,6 +13,8 @@ const t = useTranslations(lang);
 const items = (await getCollection('portfolio'))
   .filter(p => p.data.lang === lang)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const stripCollectionLocale = (slug: string) => slug.replace(/^(en|es)\//, '');
 ---
 
 <Base title={t.nav.portfolio} description={t.portfolio.subtitle} lang={lang}>
@@ -37,7 +39,7 @@ const items = (await getCollection('portfolio'))
       ) : (
         <div class="portfolio-grid">
           {items.map((item) => (
-            <a href={`/${lang}/portfolio/${item.slug}`} class="card portfolio-card reveal">
+            <a href={`/${lang}/portfolio/${stripCollectionLocale(item.slug)}`} class="card portfolio-card reveal">
               <img src={item.data.image} alt={item.data.title} loading="lazy" width="600" height="340" />
               <div class="card-body">
                 <div class="card-meta">

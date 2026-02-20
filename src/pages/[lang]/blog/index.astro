@@ -13,6 +13,16 @@ const t = useTranslations(lang);
 const posts = (await getCollection('blog'))
   .filter(p => p.data.lang === lang && !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const stripCollectionLocale = (slug: string) => slug.replace(/^(en|es)\//, '');
+const dateLocale = lang === 'en' ? 'en-US' : 'es-ES';
+const formatPostDate = (date: Date) =>
+  date.toLocaleDateString(dateLocale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
 ---
 
 <Base title={t.nav.blog} description={t.blog.subtitle} lang={lang}>
@@ -37,7 +47,7 @@ const posts = (await getCollection('blog'))
       ) : (
         <div class="blog-list">
           {posts.map((post) => (
-            <a href={`/${lang}/blog/${post.slug}`} class="blog-row reveal">
+            <a href={`/${lang}/blog/${stripCollectionLocale(post.slug)}`} class="blog-row reveal">
               {post.data.image && (
                 <div class="blog-row-img">
                   <img src={post.data.image} alt={post.data.title} loading="lazy" width="280" height="170" />
@@ -47,7 +57,7 @@ const posts = (await getCollection('blog'))
                 <div class="blog-row-meta">
                   {post.data.tags[0] && <span class="card-tag">{post.data.tags[0]}</span>}
                   <time datetime={post.data.date.toISOString()}>
-                    {post.data.date.toLocaleDateString(lang === 'en' ? 'en-US' : 'es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    {formatPostDate(post.data.date)}
                   </time>
                 </div>
                 <h2>{post.data.title}</h2>

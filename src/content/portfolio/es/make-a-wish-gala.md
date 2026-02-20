@@ -1,30 +1,30 @@
 ---
-title: "Make-A-Wish Gala: PR Behind the Curtain"
+title: "Gala Make-A-Wish: PR Tras Bastidores"
 date: 2025-11-15
-lang: "en"
-tags: ["Event PR", "Nonprofit", "Gala"]
+lang: "es"
+tags: ["PR de Eventos", "Sin Fines de Lucro", "Gala"]
 draft: false
-description: "Managing press operations for the Intercontinental Make-A-Wish Gala — from pitch to post-event recap."
+description: "Gestión de operaciones de prensa para la Gala Intercontinental Make-A-Wish, desde el pitch hasta el resumen post-evento."
 image: "/images/portfolio-makeawish.webp"
 featured: true
 client: "Tara INK."
 ---
 
-## Overview
+## Resumen
 
-The Intercontinental Make-A-Wish Gala is a high-profile charity event that brings together philanthropists, celebrities, and community leaders. Supporting the communications team at Tara INK. gave me firsthand experience in nonprofit event PR.
+La Gala Intercontinental Make-A-Wish es un evento benéfico de alto perfil que reúne filántropos, celebridades y líderes comunitarios. Apoyar al equipo de comunicaciones en Tara INK. me dio experiencia directa en PR para eventos sin fines de lucro.
 
-## My Role
+## Mi Rol
 
-- Assisted with event credentialing and press area management on event night
-- Coordinated post-event coverage follow-ups with attending journalists
-- Prepared coverage recap reports highlighting tier-1 media placements
-- Drafted social media content to extend the event's reach post-gala
+- Asistí con la acreditación del evento y la gestión del área de prensa durante la gala
+- Coordiné seguimientos de cobertura post-evento con periodistas asistentes
+- Preparé reportes de cobertura destacando apariciones en medios de primer nivel
+- Redacté contenido para redes sociales para extender el alcance tras la gala
 
-## Impact
+## Impacto
 
-The event achieved strong media visibility across South Florida outlets, with social media content extending reach by approximately 25% post-event compared to prior years.
+El evento logró una visibilidad mediática sólida en medios del sur de Florida, y el contenido en redes sociales extendió el alcance aproximadamente un 25% después del evento frente a años anteriores.
 
-## Lessons Learned
+## Lecciones Aprendidas
 
-Nonprofit events require a delicate balance: generating excitement while maintaining the dignity of the cause. Every pitch and press interaction must reflect the mission at its core.
+Los eventos sin fines de lucro requieren un equilibrio delicado: generar entusiasmo sin perder la dignidad de la causa. Cada pitch e interacción con la prensa debe reflejar la misión en su esencia.

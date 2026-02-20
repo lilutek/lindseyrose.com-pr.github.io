@@ -9,7 +9,9 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const altLang = getAlternateLang(lang);
 const currentPath = Astro.url.pathname;
-const altPath = currentPath.replace(`/${lang}/`, `/${altLang}/`).replace(`/${lang}`, `/${altLang}`);
+const pathWithoutLocale = currentPath.replace(/^\/(en|es)(?=\/|$)/, '') || '/';
+const normalizedPath = pathWithoutLocale.startsWith('/') ? pathWithoutLocale : `/${pathWithoutLocale}`;
+const altPath = normalizedPath === '/' ? `/${altLang}/` : `/${altLang}${normalizedPath}`;
 
 const navLinks = [
   { href: `/${lang}/`, label: t.nav.home },
