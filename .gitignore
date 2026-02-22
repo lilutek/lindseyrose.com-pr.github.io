@@ -22,5 +22,9 @@ pnpm-debug.log*
 # Astro cache
 .astro/
 
+# TinaCMS generated
+tina/__generated__/
+.tina/
+
 # sensitive/private documentation
 docs/
