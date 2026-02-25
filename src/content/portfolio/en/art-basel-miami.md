@@ -1,13 +1,16 @@
 ---
-title: "Art Basel Miami: Inside the PR Machine"
-date: 2025-12-10
-lang: "en"
-tags: ["Event PR", "Art Basel", "Case Study"]
 draft: false
-description: "How strategic press coordination made Art Basel Miami a media success, from credentialing to post-event coverage."
-image: "/images/portfolio-artbasel.webp"
+title: 'Art Basel Miami: Inside the PR Machine 2025'
+date: 2025-12-10T00:00:00.000Z
+lang: en
+client: Tara INK.
+tags:
+  - Event PR
+  - Art Basel
+  - Case Study
+image: /images/portfolio-artbasel.webp
 featured: true
-client: "Tara INK."
+description: 'How strategic press coordination made Art Basel Miami a media success, from credentialing to post-event coverage.'
 ---
 
 ## Overview
@@ -16,10 +19,10 @@ Art Basel Miami Beach is one of the most prestigious contemporary art fairs in t
 
 ## My Role
 
-- Tracked and monitored press coverage across media outlets covering the event
-- Assisted in drafting and refining media pitches tailored to target journalists and publications
-- Managed media clippings and organized coverage reports
-- Maintained accurate RSVP lists for press events and client-hosted dinners
+* Tracked and monitored press coverage across media outlets covering the event
+* Assisted in drafting and refining media pitches tailored to target journalists and publications
+* Managed media clippings and organized coverage reports
+* Maintained accurate RSVP lists for press events and client-hosted dinners
 
 ## Key Outcomes
 
