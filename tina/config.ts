@@ -11,7 +11,7 @@ export default defineConfig({
   branch,
 
   // Get this from tina.io
-  clientId: process.env.TINA_PUBLIC_CLIENT_ID,
+  clientId: process.env.TINA_CLIENT_ID,
   // Get this from tina.io
   token: process.env.TINA_TOKEN,
 
@@ -88,6 +88,57 @@ export default defineConfig({
             name: 'body',
             label: 'Body',
             isBody: true,
+            templates: [
+              {
+                name: 'VideoEmbed',
+                label: 'Video Embed',
+                fields: [
+                  {
+                    name: 'url',
+                    label: 'Video URL (YouTube, Vimeo, or Cloudflare Stream embed URL)',
+                    type: 'string',
+                    required: true,
+                  },
+                  {
+                    name: 'title',
+                    label: 'Video Title (for accessibility)',
+                    type: 'string',
+                  },
+                ],
+              },
+              {
+                name: 'DocumentEmbed',
+                label: 'Document Embed (PDF / PowerPoint)',
+                fields: [
+                  {
+                    name: 'url',
+                    label: 'Document URL (public link to PDF or PPT/PPTX file)',
+                    type: 'string',
+                    required: true,
+                  },
+                  {
+                    name: 'type',
+                    label: 'Document Type',
+                    type: 'string',
+                    options: [
+                      { value: 'pdf', label: 'PDF' },
+                      { value: 'ppt', label: 'PowerPoint (PPT / PPTX)' },
+                    ],
+                    required: true,
+                  },
+                  {
+                    name: 'title',
+                    label: 'Document Title (for accessibility)',
+                    type: 'string',
+                  },
+                  {
+                    name: 'height',
+                    label: 'Embed Height (e.g. 600px)',
+                    type: 'string',
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
@@ -156,6 +207,57 @@ export default defineConfig({
             name: 'body',
             label: 'Body',
             isBody: true,
+            templates: [
+              {
+                name: 'VideoEmbed',
+                label: 'Video Embed',
+                fields: [
+                  {
+                    name: 'url',
+                    label: 'Video URL (YouTube, Vimeo, or Cloudflare Stream embed URL)',
+                    type: 'string',
+                    required: true,
+                  },
+                  {
+                    name: 'title',
+                    label: 'Video Title (for accessibility)',
+                    type: 'string',
+                  },
+                ],
+              },
+              {
+                name: 'DocumentEmbed',
+                label: 'Document Embed (PDF / PowerPoint)',
+                fields: [
+                  {
+                    name: 'url',
+                    label: 'Document URL (public link to PDF or PPT/PPTX file)',
+                    type: 'string',
+                    required: true,
+                  },
+                  {
+                    name: 'type',
+                    label: 'Document Type',
+                    type: 'string',
+                    options: [
+                      { value: 'pdf', label: 'PDF' },
+                      { value: 'ppt', label: 'PowerPoint (PPT / PPTX)' },
+                    ],
+                    required: true,
+                  },
+                  {
+                    name: 'title',
+                    label: 'Document Title (for accessibility)',
+                    type: 'string',
+                  },
+                  {
+                    name: 'height',
+                    label: 'Embed Height (e.g. 600px)',
+                    type: 'string',
+                  },
+                ],
+              },
+            ],
           },
         ],
       },

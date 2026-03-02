@@ -2,6 +2,8 @@
 import Base from '../../../layouts/Base.astro';
 import { useTranslations } from '../../../i18n/index';
 import { getCollection } from 'astro:content';
+import VideoEmbed from '../../../components/mdx/VideoEmbed.astro';
+import DocumentEmbed from '../../../components/mdx/DocumentEmbed.astro';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
@@ -47,7 +49,7 @@ const formattedDate = post.data.date.toLocaleDateString(dateLocale, {
     )}
     <div class="container">
       <div class="prose reveal">
-        <Content />
+        <Content components={{ VideoEmbed, DocumentEmbed }} />
       </div>
     </div>
   </article>

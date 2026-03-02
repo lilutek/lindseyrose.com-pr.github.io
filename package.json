@@ -9,8 +9,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.6",
     "astro": "^4.16.0",
-    "tinacms": "^3.5.0"
+    "tinacms": "^3.5.0",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@tinacms/cli": "^2.1.6"

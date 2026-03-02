@@ -1,0 +1,65 @@
+---
+/**
+ * VideoEmbed component
+ * Renders a responsive embedded video iframe.
+ * Supports YouTube, Vimeo, and Cloudflare Stream embed URLs.
+ * YouTube standard watch URLs (youtu.be / youtube.com/watch) are auto-converted.
+ */
+interface Props {
+  url: string;
+  title?: string;
+}
+
+const { url, title = 'Embedded video' } = Astro.props;
+
+function normalizeUrl(rawUrl: string): string {
+  try {
+    const u = new URL(rawUrl);
+    // Youtube: https://www.youtube.com/watch?v=VIDEO_ID
+    if (u.hostname.includes('youtube.com') && u.searchParams.has('v')) {
+      return `https://www.youtube.com/embed/${u.searchParams.get('v')}`;
+    }
+    // Youtube short: https://youtu.be/VIDEO_ID
+    if (u.hostname === 'youtu.be') {
+      return `https://www.youtube.com/embed${u.pathname}`;
+    }
+  } catch {
+    // fallback: return as-is
+  }
+  return rawUrl;
+}
+
+const embedUrl = normalizeUrl(url);
+---
+
+<div class="video-embed-wrapper">
+  <iframe
+    src={embedUrl}
+    title={title}
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    loading="lazy"
+  ></iframe>
+</div>
+
+<style>
+  .video-embed-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--radius-lg, 12px);
+    border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+    margin-block: var(--space-lg, 2rem);
+    background: var(--surface, #1a1a2e);
+  }
+  .video-embed-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>

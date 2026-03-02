@@ -1,0 +1,68 @@
+---
+/**
+ * DocumentEmbed component
+ * Renders an embedded PDF or PowerPoint (PPT/PPTX) in the page.
+ *
+ * - PDF: Embedded via a native <iframe> — all modern browsers support this.
+ * - PPT: Routed through Google Docs Viewer for cross-browser in-page rendering.
+ *
+ * The user must ensure PPT/PPTX files are hosted at a publicly accessible URL
+ * for Google Docs Viewer to fetch them.
+ */
+interface Props {
+  url: string;
+  type: 'pdf' | 'ppt';
+  title?: string;
+  height?: string;
+}
+
+const { url, type, title = 'Embedded document', height = '600px' } = Astro.props;
+
+const embedUrl =
+  type === 'ppt'
+    ? `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`
+    : url;
+
+const linkLabel = type === 'ppt' ? 'presentation' : 'PDF';
+---
+
+<div class="doc-embed-wrapper" style={`height: ${height}`}>
+  <iframe
+    src={embedUrl}
+    title={title}
+    loading="lazy"
+  ></iframe>
+  <p class="doc-embed-fallback">
+    Your browser cannot display this {linkLabel} inline.
+    <a href={url} target="_blank" rel="noopener noreferrer">Click here to open it</a>.
+  </p>
+</div>
+
+<style>
+  .doc-embed-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-lg, 12px);
+    border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+    margin-block: var(--space-lg, 2rem);
+    background: var(--surface, #1a1a2e);
+  }
+  .doc-embed-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+  .doc-embed-fallback {
+    display: none;
+    text-align: center;
+    padding: var(--space-md, 1.5rem);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  /* Show fallback text if iframe fails to load (e.g., browser blocks embed) */
+  .doc-embed-wrapper iframe:not([src]) + .doc-embed-fallback {
+    display: block;
+  }
+</style>
